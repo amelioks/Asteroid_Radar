@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="asteroidList"
+            type="com.udacity.asteroidradar.Asteroid" />
+
+        <variable
+            name="clickListener"
+            type="com.udacity.asteroidradar.main.AsteroidAdapter.OnClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginEnd="@dimen/spacing_normal"
+        android:onClick="@{() -> clickListener.onClick(asteroidList)}">
+
+        <TextView
+            android:id="@+id/asteroid_title"
+            style="@style/TextAppearance.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Asteroid Name"
+            android:text="@{asteroidList.codename}"/>
+
+        <TextView
+            android:id="@+id/asteroid_subtitle"
+            style="@style/TextAppearance.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/asteroid_status"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/asteroid_title"
+            app:layout_constraintVertical_bias="1.0"
+            tools:text="Asteroid Date"
+            android:text="@{asteroidList.closeApproachDate}"/>
+
+        <ImageView
+            android:id="@+id/asteroid_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.989"
+            app:layout_constraintStart_toEndOf="@+id/asteroid_title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.533"
+            app:statusIcon="@{asteroidList.isPotentiallyHazardous}"
+            tools:src="@drawable/ic_status_potentially_hazardous" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

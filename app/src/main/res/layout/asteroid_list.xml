@@ -5,7 +5,7 @@
 
     <data>
         <variable
-            name="asteroidList"
+            name="asteroid"
             type="com.udacity.asteroidradar.Asteroid" />
 
         <variable
@@ -19,7 +19,7 @@
         android:layout_marginStart="@dimen/spacing_normal"
         android:layout_marginTop="@dimen/spacing_normal"
         android:layout_marginEnd="@dimen/spacing_normal"
-        android:onClick="@{() -> clickListener.onClick(asteroidList)}">
+        android:onClick="@{() -> clickListener.onClick(asteroid)}">
 
         <TextView
             android:id="@+id/asteroid_title"
@@ -29,7 +29,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Asteroid Name"
-            android:text="@{asteroidList.codename}"/>
+            android:text="@{asteroid.codename}"/>
 
         <TextView
             android:id="@+id/asteroid_subtitle"
@@ -43,7 +43,7 @@
             app:layout_constraintTop_toBottomOf="@+id/asteroid_title"
             app:layout_constraintVertical_bias="1.0"
             tools:text="Asteroid Date"
-            android:text="@{asteroidList.closeApproachDate}"/>
+            android:text="@{asteroid.closeApproachDate}"/>
 
         <ImageView
             android:id="@+id/asteroid_status"
@@ -55,7 +55,7 @@
             app:layout_constraintStart_toEndOf="@+id/asteroid_title"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.533"
-            app:statusIcon="@{asteroidList.isPotentiallyHazardous}"
+            app:statusIcon="@{asteroid.isPotentiallyHazardous}"
             tools:src="@drawable/ic_status_potentially_hazardous" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

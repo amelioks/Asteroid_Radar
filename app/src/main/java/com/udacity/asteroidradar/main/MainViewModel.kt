@@ -27,11 +27,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val asteroids: LiveData<List<Asteroid>>
         get() = _asteroids
 
+
     init {
         getDailyPicture()
         getAsteroids()
     }
-
 
     private fun getDailyPicture() {
         viewModelScope.launch {
@@ -49,7 +49,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val data = repository.getAsteroids()
                 _asteroids.value = data
-                Log.d("testing", data.toString())
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -57,11 +56,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-    fun displayAsteroidDetails(asteroid: Asteroid) {
+    fun onAsteroidClick(asteroid: Asteroid) {
         _navigateToSelectedAsteroid.value = asteroid
     }
 
-    fun displayPropertyDetailsComplete() {
+    fun asteroidDetailNavigated() {
         _navigateToSelectedAsteroid.value = null
     }
 

@@ -28,13 +28,14 @@ object AsteroidApi {
         .baseUrl(Constants.BASE_URL)
         .build()
 
-    val retrofitService: AsteroidApiService by lazy {
+    private val retrofitService: AsteroidApiService by lazy {
         retrofit.create(AsteroidApiService::class.java)
     }
 
 
     suspend fun getAsteroids(): List<Asteroid> {
-        val stringResult = retrofitService.getAsteroidsApi("2022-09-27","2022-10-04",Constants.API_KEY)
+        val stringResult =
+            retrofitService.getAsteroidsApi("2022-09-27", "2022-10-04", Constants.API_KEY)
         val jsonObjectResult = JSONObject(stringResult)
 
         return parseAsteroidsJsonResult(jsonObjectResult)

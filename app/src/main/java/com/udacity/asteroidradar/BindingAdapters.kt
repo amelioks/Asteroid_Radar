@@ -41,12 +41,21 @@ fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
     textView.text = String.format(context.getString(R.string.km_s_unit_format), number)
 }
 
-@BindingAdapter("imageUrl")
-fun bindImage(imgView: ImageView, imgUrl: String?) {
-    Picasso.with(imgView.context)
-        .load(imgUrl)
-        .placeholder(R.drawable.placeholder_picture_of_day)
-        .into(imgView)
+@BindingAdapter("pictureOfDay")
+fun bindImageDailyPicture(imgView: ImageView, picture: PictureOfDay?) {
+    picture?.let {
 
+        if (it.mediaType == "picture") {
 
+            Picasso.with(imgView.context)
+                .load(it.url)
+                .into(imgView)
+
+            val strFormat = imgView.resources.getString(
+                R.string.nasa_picture_of_day_content_description_format
+            )
+            imgView.contentDescription = String.format(strFormat, it.title)
+
+        }
+    }
 }

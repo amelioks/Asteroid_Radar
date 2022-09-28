@@ -10,10 +10,10 @@ interface AsteroidApiService {
     suspend fun getAsteroidsApi(
         @Query(Constants.QUERY_START_DATE) startDate: String,
         @Query(Constants.QUERY_END_DATE) endDate: String,
-        @Query(Constants.API_KEY) apiKey: String): String
+        @Query(Constants.QUERY_API_KEY) apiKey: String): String
 
     @GET(Constants.HTTP_GET_APOD_PATH)
     suspend fun getPictureDay(
-        @Query(Constants.API_KEY) apiKey: String): PictureOfDay
+        @Query(Constants.QUERY_API_KEY) apiKey: String): PictureOfDay
 
 }

@@ -23,7 +23,7 @@ class RefreshAsteroid (appContext: Context, params: WorkerParameters):
         val repository = AsteroidRepository(database)
 
         return try {
-            repository.getAsteroids(filter = AsteroidAPIFilter.SHOW_ALL)
+            repository.refreshAsteroids(filter = AsteroidAPIFilter.SHOW_ALL)
             Result.success()
         } catch (e: HttpException) {
             Result.retry()

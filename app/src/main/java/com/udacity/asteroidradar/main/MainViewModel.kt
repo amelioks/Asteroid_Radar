@@ -1,9 +1,6 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.AsteroidRepository
@@ -18,6 +15,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val database = AsteroidDatabase.getInstance(application)
     private val repository = AsteroidRepository(database)
 
+    private val asteroidsFilter = MutableLiveData<AsteroidAPIFilter>(AsteroidAPIFilter.SHOW_ALL)
+    var asteroids: LiveData<List<Asteroid>> =
+        Transformations.switchMap(asteroidsFilter) {
+            when(it) {
+                AsteroidAPIFilter.SHOW_TODAY -> repository.todayAsteroids
+                AsteroidAPIFilter.SHOW_ALL -> repository.weekAsteroids
+                else -> repository.asteroids
+            }
+        }
+
     private val _navigateToSelectedAsteroid = MutableLiveData<Asteroid>()
     val navigateToSelectedAsteroid: LiveData<Asteroid>
         get() = _navigateToSelectedAsteroid
@@ -26,13 +33,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val dailyPicture: LiveData<PictureOfDay>
         get() = _dailyPicture
 
-    private val _asteroids = MutableLiveData<List<Asteroid>>()
-    val asteroids: LiveData<List<Asteroid>>
-        get() = _asteroids
-
-
     init {
-        getAsteroids(AsteroidAPIFilter.SHOW_ALL)
+        getAsteroids()
         getDailyPicture()
 
     }
@@ -48,11 +50,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun getAsteroids(filter: AsteroidAPIFilter) {
+    private fun getAsteroids() {
         viewModelScope.launch {
             try {
-                val data = repository.getAsteroids(filter)
-                _asteroids.value = data
+                repository.refreshAsteroids()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -69,9 +70,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun updateFilter(filter: AsteroidAPIFilter) {
-        getAsteroids(filter)
+        asteroidsFilter.value = filter
     }
-
-
 }
 

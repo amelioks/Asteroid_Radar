@@ -1,12 +1,12 @@
 package com.udacity.asteroidradar
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.api.AsteroidAPIFilter
 import com.udacity.asteroidradar.api.AsteroidApi
 import com.udacity.asteroidradar.api.getSeventhDayFormatted
 import com.udacity.asteroidradar.api.getTodayFormatted
-import com.udacity.asteroidradar.database.AsteroidDao
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.asAsteroidEntities
 import com.udacity.asteroidradar.database.asAsteroids
@@ -16,36 +16,37 @@ import kotlinx.coroutines.withContext
 
 class AsteroidRepository (private val database: AsteroidDatabase) {
 
-    suspend fun getAsteroids(filter: AsteroidAPIFilter): List<Asteroid> {
-        return withContext(Dispatchers.IO) {
-
-            val asteroids = AsteroidApi.getAsteroids(
-                getTodayFormatted(), getSeventhDayFormatted()
-            )
-            database.asteroidDao.insertAllAsteroids(asteroids.asAsteroidEntities())
-            when (filter) {
-                AsteroidAPIFilter.SHOW_TODAY -> getTodayAsteroids()
-                AsteroidAPIFilter.SHOW_ALL -> getWeekAsteroids()
-                else -> database.asteroidDao.getAllSavedAsteroids().asAsteroids()
-            }
+    val asteroids: LiveData<List<Asteroid>> =
+        Transformations.map(database.asteroidDao.getAllSavedAsteroids()) {
+            it.asAsteroids()
         }
-    }
 
-    suspend fun getWeekAsteroids(): List<Asteroid> {
-        return withContext(Dispatchers.IO) {
+    val todayAsteroids: LiveData<List<Asteroid>> =
+        Transformations.map(
+            database.asteroidDao.getAsteroidwithDates(getTodayFormatted(), getTodayFormatted())
+        ) {
+            it.asAsteroids()
+        }
+
+    val weekAsteroids: LiveData<List<Asteroid>> =
+        Transformations.map(
             database.asteroidDao.getAsteroidwithDates(
-                getTodayFormatted(), getSeventhDayFormatted()
-            ).asAsteroids()
-        }
-    }
-
-    suspend fun getTodayAsteroids(): List<Asteroid> {
-        return withContext(Dispatchers.IO) {
-            database.asteroidDao.getAsteroidwithDates(getTodayFormatted(),
+                getTodayFormatted(),
                 getSeventhDayFormatted()
             )
-                .asAsteroids()
+        ) {
+            it.asAsteroids()
         }
+
+
+    suspend fun refreshAsteroids() {
+         withContext(Dispatchers.IO) {
+                val asteroids = AsteroidApi.getAsteroids(
+                    getTodayFormatted(), getSeventhDayFormatted()
+                )
+                database.asteroidDao.insertAllAsteroids(asteroids.asAsteroidEntities())
+
+         }
     }
 
     suspend fun getDailyPicture(): PictureOfDay {

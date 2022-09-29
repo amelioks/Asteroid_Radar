@@ -1,12 +1,15 @@
 package com.udacity.asteroidradar.main
 
+import android.os.Build
 import android.os.Bundle
 import android.view.*
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import com.udacity.asteroidradar.AsteroidRepository
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.api.AsteroidAPIFilter
 import com.udacity.asteroidradar.databinding.FragmentMainBinding

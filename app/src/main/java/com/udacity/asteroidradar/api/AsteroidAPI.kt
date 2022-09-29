@@ -15,6 +15,12 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+
+enum class AsteroidAPIFilter(val value:String) {
+    SHOW_ALL("week"),
+    SHOW_TODAY("today"),
+    SHOW_SAVED("saved")
+}
 object AsteroidApi {
     //for picture of the day
     private val moshi = Moshi.Builder()
@@ -33,9 +39,9 @@ object AsteroidApi {
     }
 
 
-    suspend fun getAsteroids(): List<Asteroid> {
+    suspend fun getAsteroids(startDate:String, endDate:String): List<Asteroid> {
         val stringResult =
-            retrofitService.getAsteroidsApi("2022-09-29", "2022-10-06", Constants.API_KEY)
+            retrofitService.getAsteroidsApi(startDate, endDate, Constants.API_KEY)
         val jsonObjectResult = JSONObject(stringResult)
 
         return parseAsteroidsJsonResult(jsonObjectResult)

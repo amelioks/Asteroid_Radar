@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.AsteroidRepository
 import com.udacity.asteroidradar.PictureOfDay
+import com.udacity.asteroidradar.api.AsteroidAPIFilter
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import kotlinx.coroutines.launch
 
@@ -29,7 +30,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
 
     init {
-        getAsteroids()
+        getAsteroids(AsteroidAPIFilter.SHOW_ALL)
         getDailyPicture()
 
     }
@@ -45,10 +46,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun getAsteroids() {
+    private fun getAsteroids(filter: AsteroidAPIFilter) {
         viewModelScope.launch {
             try {
-                val data = repository.getAsteroids()
+                val data = repository.getAsteroids(filter)
                 _asteroids.value = data
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -63,6 +64,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun asteroidDetailNavigated() {
         _navigateToSelectedAsteroid.value = null
+    }
+
+    fun updateFilter(filter: AsteroidAPIFilter) {
+        getAsteroids(filter)
     }
 
 

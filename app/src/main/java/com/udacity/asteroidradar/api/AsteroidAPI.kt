@@ -35,7 +35,7 @@ object AsteroidApi {
 
     suspend fun getAsteroids(): List<Asteroid> {
         val stringResult =
-            retrofitService.getAsteroidsApi("2022-09-27", "2022-10-04", Constants.API_KEY)
+            retrofitService.getAsteroidsApi("2022-09-29", "2022-10-06", Constants.API_KEY)
         val jsonObjectResult = JSONObject(stringResult)
 
         return parseAsteroidsJsonResult(jsonObjectResult)

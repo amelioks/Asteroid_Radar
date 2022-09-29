@@ -29,8 +29,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
 
     init {
-        getDailyPicture()
         getAsteroids()
+        getDailyPicture()
+
     }
 
     private fun getDailyPicture() {

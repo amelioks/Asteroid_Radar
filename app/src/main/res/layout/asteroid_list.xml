@@ -56,6 +56,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.533"
             app:statusIcon="@{asteroid.isPotentiallyHazardous}"
+            android:contentDescription="@string/potentially_hazardous_asteroid_image"
             tools:src="@drawable/ic_status_potentially_hazardous" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

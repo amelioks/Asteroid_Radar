@@ -17,13 +17,12 @@ class RefreshAsteroid (appContext: Context, params: WorkerParameters):
         const val WORK_NAME = "RefreshAsteroidsWorker"
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun doWork(): Result {
         val database = AsteroidDatabase.getInstance(applicationContext)
         val repository = AsteroidRepository(database)
 
         return try {
-            repository.refreshAsteroids(filter = AsteroidAPIFilter.SHOW_ALL)
+            repository.refreshAsteroids()
             Result.success()
         } catch (e: HttpException) {
             Result.retry()
